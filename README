@@ -1,0 +1,4 @@
+For DropSeq analysis
+git init
+cabal partially setup
+use stack to manage the project

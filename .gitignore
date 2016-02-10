@@ -16,3 +16,4 @@ bin/
 cabal.sandbox.config
 dist/
 data/
+.stack-work/

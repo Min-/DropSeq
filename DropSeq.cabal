@@ -22,6 +22,8 @@ library
                      , bytestring
                      , safe
                      , containers
+                     , vector
+                     , statistics
   default-language:    Haskell2010
 
 executable DropSeq-exe

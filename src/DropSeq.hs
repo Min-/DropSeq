@@ -66,5 +66,5 @@ barcodeQc inputPath = do
 
 sortUMI inputPath = do
   results <- map (T.splitAt 12 . T.init) . T.lines <$> TextIO.readFile inputPath
---  let output = T.unlines $ map (T.pack . show . length) $ L.reverse $ L.sortBy (comparing length) $ L.groupBy ((==) `on` snd) $ L.sortBy (comparing snd) results
+  let output = T.unlines $ map (T.pack . show . length) $ L.reverse $ L.sortBy (comparing length) $ L.groupBy ((==) `on` snd) $ L.sortBy (comparing snd) results
   TextIO.writeFile "outputUMIsize.txt" output

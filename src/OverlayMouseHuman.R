@@ -49,7 +49,7 @@ colSums(input)
 # for mouse 535/2041193 = 0.0002621016
 
 ## shrink count list
-abudant.cells <- input[input$`Human Reads` >= 542 | input$`Mouse Reads` >= 535, ]
+abudant.cells <- input[input$`Human Reads` >= 1500 | input$`Mouse Reads` >= 1500, ]
 # 673 total
 
 ## plot again, use log scale of axes, clearly three categories, use kmean to cluster them
@@ -97,13 +97,13 @@ mixedCutoff()
 
 ### visualize
 
-cutoff <- 0.9996
+cutoff <- 0.9995
 human.q <- quantile(input$`Human Reads`, cutoff)
 mouse.q <-  quantile(input$`Mouse Reads`, cutoff)
 abudant.cells <- input[input$`Human Reads` >= human.q | input$`Mouse Reads` >= mouse.q, ]
 plot(abudant.cells$`Human Reads` + 1, abudant.cells$`Mouse Reads` + 1, cex=0.2, pch = 19, log = "xy")
 
-set.seed(615)
+set.seed(124)
 abudant.cells.kmean <- kmeans(log(abudant.cells+1), iter.max = 10, centers = 4)
 cluster.color <- function()
 {  a <- abudant.cells.kmean$cluster;

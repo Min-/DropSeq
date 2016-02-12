@@ -52,6 +52,7 @@ importSamFile f = readSam f >>= return . map constructReads . map splitFields . 
 keepHeader f = TextIO.readFile f >>= return . (T.intercalate "\n") . filter (\x->T.head x == '@') . T.lines
 
 --ouput list of reads to sam format file
+-- outputSamFile use TextIO.appendFile, clear folder first
 outputSamFile s filename = do
   let showReads (Reads qnm flg rnm pos mq cg rn pn tlen sseq q md) = T.intercalate "\t" [qnm, T.pack $ show flg, rnm, T.pack $ show pos, T.pack $ show mq, cg, rn, pn, T.pack $ show tlen, sseq, q] in TextIO.appendFile (filename::FilePath) (T.intercalate "\n" (map showReads s))
 

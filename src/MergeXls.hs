@@ -8,6 +8,15 @@ Version: v.0.1.0
 README: Merge columns from excel files. 
         This program aims for more general file merging situations.
         However, for the time being, only merge files with exact same first column (row names), have same length (row number), and only take second column. Such as htcount output, and new Ion Proton platform RNA-seq read count output.
+   
+      Feb 13, 2016
+      -- Turn off deletion header by default option.
+      -- Need to stress that all the files need to be sorted by the row names.
+      -- TODO: It's not practical to drag all the files to the command line in Linux. Need to cooperate into Linux bash pipeline. i.e. be able to use - in pipes
+
+      The program doesn't work for larger scale datasets (~ hundreds or thousands of files). Not running on my macbook Pro. One solution for now is to do it multiple stopes manually. But apparently it is not a long-term solution.
+      Do profiling and work on RAM consumption.
+
 -}
 
 import qualified Data.Text.Lazy as T
@@ -54,7 +63,7 @@ main = do
   
 preludeInformation :: IO ()
 preludeInformation = do
-  putStrLn "mergeXls: merge columns from excel files. Note: The first row will be automatically removed."
+  putStrLn "mergeXls: merge columns from excel files." -- Note: The first row will be automatically removed."
   putStrLn "Usage: mergeXls input1 input2 input3 outputpath\n"
 
 -- TODO: check if first line is header or numbers
@@ -63,7 +72,7 @@ checkHeader [] = []
 checkHeader (x:xs) = if isHeader x
                      then xs
                      else (x:xs)
-  where isHeader x = False
+  where isHeader x = False -- True, turned off Feb 12, 2016
 
 -- samples are long form (eg: [[rowname1, rowname2, rowname3, ...], [readnumber1, rn2, rn3, ...]])
 checkRowNames :: Eq a => [[a]] -> IO ()

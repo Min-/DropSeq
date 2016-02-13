@@ -17,7 +17,7 @@ cell.cycle <- read.table("/Users/minzhang/Documents/data/P56_dropseq/DropSeq/dat
 head(cell.cycle)
 cell.cycle
 
-input2 <- input[, colSums(input[,1:200]) >= 2000]
+input2 <- input[, colSums(input[,1:200]) >= 1000] ## 1000 cutoff, 112 genes
 input2$gene <- input$gene
 input.g1s <- input2[input2$gene %in% cell.cycle$G1S, 1:112]
 input.s <- input2[input2$gene %in% cell.cycle$S, 1:112]

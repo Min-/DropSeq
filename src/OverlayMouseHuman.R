@@ -8,6 +8,7 @@
 # v0.1.1: analyse the distribution of reads for each cell barcodes
 
 ## overlay mouse and human dropseq
+library(vioplot)
 
 inputPath <- "/Users/minzhang/Documents/data/P56_dropseq/MH-L1-32920888/Data/Intensities/BaseCalls/readCountHumanMouse.txt"
 
@@ -16,16 +17,22 @@ inputPath <- "/Users/minzhang/Documents/data/P56_dropseq/runL2test/readCountHuma
 # L2
 inputPath <- "/Users/minzhang/Documents/data/P56_dropseq/results/readCountHumanMouseL2.txt"
 
+## Feb 16, 2016
+## merged 3 experiments
+inputPath <- "/Users/minzhang/Documents/data/P56_dropseq/results/combine3.humanmouse.readcount.txt"
+
 input <- read.table(inputPath, header = F, sep = "\t", row.names = 1)
 
 colnames(input) <- c("Human Reads", "Mouse Reads")
 
+input <- input[rowSums(input) >= 500, ]
+
 ## plotting between two species
 plot(input$`Human Reads`, input$`Mouse Reads`
-     , xlim=c(0,10000)
-     , ylim = c(0, 10000)
+     , xlim=c(0,15000)
+     , ylim = c(0, 15000)
      #, log = "yx"
-     , pch = 19, col = ifelse(input$`Human Reads` <= 100, "darkred", ifelse(input$`Mouse Reads`<= 100, "darkblue", "cornflowerblue")), cex = 0.1, xlab = "Human Reads", ylab = "Mouse Reads")
+     , pch = 19, col = ifelse(input$`Human Reads` <= 200, "darkred", ifelse(input$`Mouse Reads`<= 200, "darkblue", "cornflowerblue")), cex = 0.1, xlab = "Human Reads", ylab = "Mouse Reads")
 
 ## distribution
 head(input)
@@ -49,14 +56,26 @@ colSums(input)
 # for mouse 535/2041193 = 0.0002621016
 
 ## shrink count list
-abudant.cells <- input[input$`Human Reads` >= 1500 | input$`Mouse Reads` >= 1500, ]
-# 673 total
+## 0.05%, 729 total
+## 0.02%  297 total
+abudant.cells <- input[input$`Human Reads` >= 2789 | input$`Mouse Reads` >= 1311, ]
 
 ## plot again, use log scale of axes, clearly three categories, use kmean to cluster them
 plot(abudant.cells$`Human Reads` + 1, abudant.cells$`Mouse Reads` + 1, cex=0.2, pch = 19, log = "xy")
 
+## 
+## this plot is extremely misleading. 
+
+plot(abudant.cells$`Human Reads`, abudant.cells$`Mouse Reads`
+     , xlim=c(0,15000)
+     , ylim = c(0, 15000)
+     #, log = "yx"
+     , pch = 19, col = ifelse(abudant.cells$`Human Reads` <= 805, "darkred", ifelse(abudant.cells$`Mouse Reads`<= 364, "darkblue", "darkgrey")), cex = 0.2, xlab = "Human Reads", ylab = "Mouse Reads")
+
+
+
 set.seed(124)
-abudant.cells.kmean <- kmeans(log(abudant.cells+1), iter.max = 10, centers = 4)
+abudant.cells.kmean <- kmeans(log(abudant.cells+1), iter.max = 10, centers = 5)
 cluster.color <- function()
   {  a <- abudant.cells.kmean$cluster;
      col <-  ifelse(a == 1, "red",

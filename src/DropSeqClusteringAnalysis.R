@@ -8,6 +8,8 @@ library(pheatmap)
 ## 200 top cell barcodes of human cells L2 data
 inputpath <- "/Users/minzhang/Documents/data/P56_dropseq/runL2test/hg19.L2/mixall.collapsed.txt"
 
+
+
 input <- read.table(inputpath, header = T, sep = "\t", row.names = 1)
 head(input)
 
@@ -42,9 +44,13 @@ input.cell.cycle3[input.cell.cycle3 == 1.5] <- 0
 input.cell.cycle3[input.cell.cycle3 == 1] <- 0
 
 ## not good separation using raw number
-set.seed(41)
-pheatmap(input.cell.cycle3, scale = "column", cluster_rows = T, cluster_cols = T, cutree_cols = 1)
 
+library("colorspace")
+
+set.seed(41)
+pheatmap(input.cell.cycle3, scale = "column", cluster_rows = T, cluster_cols = T, cutree_cols = 1, treeheight_row = F, treeheight_col = F, legend_labels = F, color = diverge_hcl(30, alpha = 1), labels_col = T, border_color = "none")
+
+p
 
 input.cell.cycle3
 
